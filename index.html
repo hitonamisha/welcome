@@ -340,16 +340,24 @@ function renderYoho(data) {
 }
 
 function loadYoho() {
-  fetch(GAS_URL)
-    .then(r => r.json())
-    .then(res => renderYoho(res.status === 'ok' ? res.data : null))
-    .catch(() => {
-      document.getElementById('yoho-body').innerHTML = '<span style="color:red;">接続エラー</span>';
-    });
+  window._yohoCallback = function(res) {
+    renderYoho(res.status === 'ok' ? res.data : null);
+    const s = document.getElementById('_yoho_script');
+    if (s) s.remove();
+  };
+  const old = document.getElementById('_yoho_script');
+  if (old) old.remove();
+  const s = document.createElement('script');
+  s.id  = '_yoho_script';
+  s.src = GAS_URL + '?callback=_yohoCallback';
+  s.onerror = () => {
+    document.getElementById('yoho-body').innerHTML = '<span style="color:red;">接続エラー</span>';
+  };
+  document.head.appendChild(s);
 }
 
 loadYoho();
-setInterval(loadYoho, 600000); // 10分おき
+setInterval(loadYoho, 600000);
 </script>
 </body>
 </html>

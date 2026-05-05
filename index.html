@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>★合同会社ひとなみ社★ようこそ！！</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(45deg,
+        #ff0000, #ff7700, #ffff00, #00ff00,
+        #0000ff, #8b00ff, #ff00ff, #ff0000);
+      background-size: 400% 400%;
+      animation: rainbow 3s ease infinite;
+      font-family: 'Zen Kurenaido', 'Comic Sans MS', cursive;
+      overflow-x: hidden;
+    }
+
+    @keyframes rainbow {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-20px); }
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .title-box {
+      background: #fff;
+      border: 8px dashed #ff00ff;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 10px 10px 0 #ffff00, 20px 20px 0 #ff0000;
+    }
+
+    h1 {
+      font-size: 52px;
+      color: #ff00cc;
+      text-shadow:
+        3px 3px 0 #ffff00,
+        6px 6px 0 #0000ff;
+      animation: bounce 1s ease infinite;
+      margin: 0;
+    }
+
+    .sub {
+      font-size: 24px;
+      color: #0000ff;
+      animation: blink 0.8s step-end infinite;
+      font-weight: bold;
+    }
+
+    marquee {
+      background: #000;
+      color: #00ff00;
+      font-size: 20px;
+      padding: 8px 0;
+      font-weight: bold;
+      letter-spacing: 4px;
+    }
+
+    .heart {
+      color: #ff0000;
+      font-size: 32px;
+      animation: spin 2s linear infinite;
+      display: inline-block;
+    }
+
+    .section {
+      background: rgba(255,255,255,0.85);
+      border: 6px solid;
+      border-color: #ff0000 #0000ff #00ff00 #ff00ff;
+      margin: 20px 0;
+      padding: 20px;
+    }
+
+    .section h2 {
+      font-size: 32px;
+      margin: 0 0 12px;
+      text-shadow: 2px 2px 0 #ff9900;
+    }
+
+    .section p {
+      font-size: 18px;
+      line-height: 1.8;
+      color: #333;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #ff0000;
+      color: #ffff00;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin: 4px;
+      border: 2px solid #000;
+      animation: blink 1.5s step-end infinite;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .service-card {
+      background: linear-gradient(135deg, #ffff00, #ff00ff);
+      border: 4px solid #000;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .emoji-row {
+      font-size: 40px;
+      margin: 10px 0;
+      animation: bounce 1.5s ease infinite;
+      display: block;
+    }
+
+    .ufo {
+      font-size: 60px;
+      animation: spin 4s linear infinite;
+      display: inline-block;
+    }
+
+    .footer {
+      background: #000;
+      color: #00ff00;
+      padding: 20px;
+      font-size: 14px;
+      margin-top: 20px;
+      border: 4px solid #ff00ff;
+    }
+
+    .under-construction {
+      font-size: 28px;
+      color: #ff0000;
+      background: #ffff00;
+      padding: 10px;
+      border: 4px dashed #ff0000;
+      animation: blink 0.5s step-end infinite;
+      margin: 20px 0;
+    }
+
+    a { color: #0000ff; font-weight: bold; font-size: 20px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div style="font-size:14px; color:#fff; font-weight:bold;">
+    ★アクセスカウンター★ <span style="background:#000;color:#0f0;padding:2px 8px;">000247</span>
+  </div>
+
+  <!-- タイトル -->
+  <div class="title-box">
+    <span class="ufo">🛸</span>
+    <h1>合同会社<br>ひとなみ社</h1>
+    <div class="sub">★ようこそ！いらっしゃいませ！★</div>
+    <div>
+      <span class="heart">♥</span>
+      <span style="font-size:22px; color:#0000ff; font-weight:bold;">商店街に、人の流れを。</span>
+      <span class="heart">♥</span>
+    </div>
+  </div>
+
+  <!-- 流れるテキスト -->
+  <marquee scrollamount="6">
+    ★★★ BLE人流データで商店街を元気に！！ ★ ひとなみ社は豊橋発のスタートアップです ★ お気軽にご相談ください ★★★
+  </marquee>
+
+  <div class="under-construction">
+    🚧 このサイトは工事中です 🚧
+  </div>
+
+  <!-- 事業紹介 -->
+  <div class="section">
+    <h2 style="color:#ff0000;">🎉 わたしたちのサービス 🎉</h2>
+    <span class="emoji-row">📡🐝📊</span>
+    <div class="service-grid">
+      <div class="service-card">
+        📡 BLEセンサーで<br>人の動きを<br>見える化！！
+      </div>
+      <div class="service-card">
+        💬 商店街むけ<br>AIチャットボット<br>（LINE対応）
+      </div>
+      <div class="service-card">
+        🤖 ひと気予報<br>Discordボット<br>リアルタイム配信
+      </div>
+      <div class="service-card">
+        📈 Looker Studio<br>でダッシュボード<br>見放題！
+      </div>
+    </div>
+  </div>
+
+  <!-- 料金 -->
+  <div class="section">
+    <h2 style="color:#0000ff;">💰 おねだん 💰</h2>
+    <p>
+      <span class="badge">NEW</span>
+      <span class="badge">お得</span>
+      <span class="badge">限定</span>
+    </p>
+    <p style="font-size:22px; color:#ff0000; font-weight:bold;">
+      初期費用 5〜10万円<br>
+      <span style="font-size:16px; color:#333;">（WiFiあり/なしで変動）</span><br><br>
+      月額 2万円〜
+    </p>
+    <p style="color:#0000ff; font-weight:bold; animation: blink 1s step-end infinite; display:inline-block;">
+      ※ 今なら相談無料！！
+    </p>
+  </div>
+
+  <!-- 会社情報 -->
+  <div class="section">
+    <h2 style="color:#ff00cc;">🏢 会社情報 🏢</h2>
+    <p>
+      <strong>社名：</strong>合同会社ひとなみ社<br>
+      <strong>所在地：</strong>愛知県豊橋市<br>
+      <strong>設立：</strong>2026年12月予定<br>
+      <strong>事業：</strong>BLE人流データ活用 / 商店街DX支援<br>
+    </p>
+    <span class="emoji-row">🐱🛸🍓♥️😊</span>
+  </div>
+
+  <!-- お問い合わせ -->
+  <div class="section">
+    <h2 style="color:#00aa00;">📧 お問い合わせ 📧</h2>
+    <p>
+      <a href="mailto:info@hitonamisha.jp">info@hitonamisha.jp</a><br>
+      <span style="font-size:14px; color:#999;">（メールアドレスは仮です）</span>
+    </p>
+  </div>
+
+  <marquee scrollamount="3" direction="right">
+    ♥ ♥ ♥ ひとなみ社をよろしくお願いします ♥ ♥ ♥
+  </marquee>
+
+  <div class="footer">
+    <p>Copyright © 2026 合同会社ひとなみ社 All Rights Reserved.</p>
+    <p style="font-size:12px; color:#888;">
+      推奨環境: Internet Explorer 6.0以上 / 画面解像度 800×600
+    </p>
+    <p>🌟 Since 2026 🌟</p>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -251,11 +251,22 @@
     <span class="emoji-row">🐱🛸🍓♥️😊</span>
   </div>
 
+  <!-- ひとなみ予報 -->
+  <div class="section" id="yoho-section">
+    <h2 style="color:#ff6600;">📡 水上ビル ひとなみ予報 📡</h2>
+    <div id="yoho-body" style="font-family:monospace; font-size:15px; line-height:2; text-align:left; padding:8px;">
+      <span style="color:#999;">読み込み中...</span>
+    </div>
+    <div style="font-size:11px; color:#999; margin-top:8px;">
+      ※ 前時間の確定データを表示 / 自動更新10分おき
+    </div>
+  </div>
+
   <!-- お問い合わせ -->
   <div class="section">
     <h2 style="color:#00aa00;">📧 お問い合わせ 📧</h2>
     <p>
-      <a href="mailto:info@hitonamisha.jp">info@hitonamisha.jp</a><br>
+      <a href="mailto:info@hitonamisha.jp">info@hitonamisha.com</a><br>
       <span style="font-size:14px; color:#999;">（メールアドレスは仮です）</span>
     </p>
   </div>
@@ -274,5 +285,71 @@
 
 </div>
 
+<script>
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyG9uM5R3HzzjKwIJfIoPZ19tB7kEx4mx0trZEVRIi7s_a8B9Pp3lH3SeENHNgYy7g/exec';
+const SHOPPING_AREA = ['A棟','B棟','C棟','D棟'];
+
+function bar(n, max) {
+  const pct = n / Math.max(max, 1);
+  if (pct >= 0.9) return '█████';
+  if (pct >= 0.7) return '████░';
+  if (pct >= 0.5) return '███░░';
+  if (pct >= 0.3) return '██░░░';
+  if (pct >  0  ) return '█░░░░';
+  return '░░░░░';
+}
+
+function renderYoho(data) {
+  const el = document.getElementById('yoho-body');
+  if (!data) { el.innerHTML = '<span style="color:red;">データ取得失敗</span>'; return; }
+
+  const shopRows  = data.rows.filter(r =>  SHOPPING_AREA.includes(r.loc_id));
+  const otherRows = data.rows.filter(r => !SHOPPING_AREA.includes(r.loc_id));
+  const shopTotal = shopRows.reduce((s, r) => s + r.visitor_count, 0);
+  const otherTotal= otherRows.reduce((s, r) => s + r.visitor_count, 0);
+  const maxCount  = Math.max(...data.rows.map(r => r.visitor_count), 1);
+  const topLoc    = shopRows.reduce((a, b) => b.visitor_count > a.visitor_count ? b : a, shopRows[0] || {loc_id:''});
+
+  let html = `<span style="color:#ff6600;font-weight:bold;">📍 水上ビル ひと気予報</span><br>`;
+  html += `<span style="color:#aaa;">${data.hour}時台（${data.date}）</span><br><br>`;
+
+  html += `<span style="color:#ffcc00;font-weight:bold;">🏪 商店街エリア（計 ${shopTotal}人）</span><br>`;
+  shopRows.forEach(r => {
+    const crown = r.loc_id === topLoc.loc_id ? ' 👑' : '';
+    const stay  = r.stay_count > 0 ? ` <span style="color:#aaa;">滞在${r.stay_count}人</span>` : '';
+    html += `<span style="color:#00ff00;">${bar(r.visitor_count, maxCount)}</span> ${r.loc_id}${crown}: <b>${r.visitor_count}人</b>${stay}<br>`;
+  });
+
+  if (otherRows.length > 0) {
+    html += `<br><span style="color:#ffcc00;font-weight:bold;">📌 その他エリア（計 ${otherTotal}人）</span><br>`;
+    otherRows.forEach(r => {
+      const stay = r.stay_count > 0 ? ` <span style="color:#aaa;">滞在${r.stay_count}人</span>` : '';
+      html += `<span style="color:#00ff00;">${bar(r.visitor_count, maxCount)}</span> ${r.loc_id}: <b>${r.visitor_count}人</b>${stay}<br>`;
+    });
+  }
+
+  if (data.flows && data.flows.length > 0) {
+    html += `<br><span style="color:#ffcc00;font-weight:bold;">🚶 移動の流れ</span><br>`;
+    data.flows.forEach(f => {
+      html += `${f.from} → ${f.to}&nbsp;&nbsp;${f.cnt}人<br>`;
+    });
+  }
+
+  html += `<br><span style="color:#666;font-size:12px;">Powered by mizunoue data center</span>`;
+  el.innerHTML = html;
+}
+
+function loadYoho() {
+  fetch(GAS_URL)
+    .then(r => r.json())
+    .then(res => renderYoho(res.status === 'ok' ? res.data : null))
+    .catch(() => {
+      document.getElementById('yoho-body').innerHTML = '<span style="color:red;">接続エラー</span>';
+    });
+}
+
+loadYoho();
+setInterval(loadYoho, 600000); // 10分おき
+</script>
 </body>
 </html>

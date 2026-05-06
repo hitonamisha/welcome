@@ -254,6 +254,12 @@
   <!-- ひとなみ予報 -->
   <div class="section" id="yoho-section">
     <h2 style="color:#ff6600;">📡 水上ビル ひとなみ予報 📡</h2>
+    <p style="font-size:14px; color:#555; line-height:1.8; text-align:left; margin-bottom:12px;">
+      豊橋市の水上ビル商店街に設置したBLEセンサーが、
+      スマートフォンのBluetooth電波を検知して人の流れをカウントします。<br>
+      1時間ごとに集計し、エリア別のひと気をリアルタイムで配信中！<br>
+      <span style="font-size:12px; color:#999;">※ BLEセンサーは個人を特定しません。集計のみです。</span>
+    </p>
     <div id="yoho-body" style="font-family:monospace; font-size:15px; line-height:2; text-align:center; padding:8px;">
       <span style="color:#999;">読み込み中...</span>
     </div>
@@ -340,20 +346,26 @@ function renderYoho(data) {
 }
 
 function loadYoho() {
-  window._yohoCallback = function(res) {
-    renderYoho(res.status === 'ok' ? res.data : null);
-    const s = document.getElementById('_yoho_script');
-    if (s) s.remove();
-  };
-  const old = document.getElementById('_yoho_script');
-  if (old) old.remove();
-  const s = document.createElement('script');
-  s.id  = '_yoho_script';
-  s.src = GAS_URL + '?callback=_yohoCallback';
-  s.onerror = () => {
-    document.getElementById('yoho-body').innerHTML = '<span style="color:red;">接続エラー</span>';
-  };
-  document.head.appendChild(s);
+  fetch(GAS_URL, { redirect: 'follow', credentials: 'omit' })
+    .then(r => r.json())
+    .then(res => renderYoho(res.status === 'ok' ? res.data : null))
+    .catch(() => {
+      // fetchが失敗した場合はJSONPにフォールバック
+      window._yohoCallback = function(res) {
+        renderYoho(res.status === 'ok' ? res.data : null);
+        const s = document.getElementById('_yoho_script');
+        if (s) s.remove();
+      };
+      const old = document.getElementById('_yoho_script');
+      if (old) old.remove();
+      const s = document.createElement('script');
+      s.id  = '_yoho_script';
+      s.src = GAS_URL + '?callback=_yohoCallback';
+      s.onerror = () => {
+        document.getElementById('yoho-body').innerHTML = '<span style="color:red;">接続エラー</span>';
+      };
+      document.head.appendChild(s);
+    });
 }
 
 loadYoho();

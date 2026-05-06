@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HITOKIYO — 水上ビル人流インテリジェンス</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #04080f;
+      --surface: rgba(0, 212, 255, 0.04);
+      --border:  rgba(0, 212, 255, 0.12);
+      --accent:  #00d4ff;
+      --accent2: #a855f7;
+      --green:   #00ffaa;
+      --amber:   #ffaa00;
+      --text:    #d0e8ff;
+      --dim:     rgba(208, 232, 255, 0.38);
+    }
+
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'Space Grotesk', system-ui, sans-serif; overflow-x: hidden; }
+
+    /* grid */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+      background-size: 52px 52px;
+    }
+
+    /* scanlines */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px);
+    }
+
+    canvas#bg { position: fixed; inset: 0; z-index: 0; }
+
+    .wrap {
+      position: relative; z-index: 1;
+      max-width: 900px; margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    /* ── HEADER ─────────────────────────────── */
+    .header { margin-bottom: 52px; }
+
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: .35em; text-transform: uppercase;
+      color: var(--accent); opacity: .65; margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 700; letter-spacing: -.03em; line-height: 1.1;
+      color: #fff;
+    }
+
+    h1 em { color: var(--accent); font-style: normal; }
+
+    .tagline {
+      margin-top: 14px; font-size: 13px; color: var(--dim);
+      font-family: 'JetBrains Mono', monospace;
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    }
+
+    .live-dot {
+      display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green); box-shadow: 0 0 10px var(--green);
+      animation: blink 2.4s ease-in-out infinite;
+    }
+
+    @keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(.7)} }
+
+    #clock { margin-left: auto; font-size: 12px; }
+
+    /* ── META BAR ───────────────────────────── */
+    .meta {
+      display: flex; flex-wrap: wrap; gap: 8px 24px;
+      padding: 14px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border); border-radius: 10px;
+      margin-bottom: 36px;
+      font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--dim);
+    }
+
+    .meta-val { color: #fff; font-size: 15px; font-weight: 700; display: block; }
+
+    /* ── SECTION LABEL ──────────────────────── */
+    .sec-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--accent); opacity: .55; margin-bottom: 14px;
+    }
+
+    /* ── AREA CARDS ─────────────────────────── */
+    .areas { display: flex; flex-direction: column; gap: 10px; margin-bottom: 44px; }
+
+    .card {
+      position: relative; padding: 20px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border); border-radius: 12px;
+      overflow: hidden;
+      animation: fadein .45s ease backwards;
+    }
+
+    @keyframes fadein { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+
+    .card::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--accent); opacity: 0; transition: opacity .3s;
+    }
+
+    .card.is-top { border-color: rgba(0,212,255,.35); }
+    .card.is-top::before { opacity: 1; box-shadow: 0 0 14px var(--accent); }
+
+    .card-row {
+      display: flex; align-items: baseline; gap: 10px; margin-bottom: 13px;
+    }
+
+    .loc {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      color: var(--accent); letter-spacing: .06em; min-width: 96px;
+    }
+
+    .badges { display: flex; gap: 6px; align-items: center; }
+
+    .badge-stay {
+      font-size: 10px; font-family: 'JetBrains Mono', monospace;
+      color: var(--amber); background: rgba(255,170,0,.1);
+      border: 1px solid rgba(255,170,0,.25); border-radius: 4px; padding: 2px 7px;
+    }
+
+    .num-wrap { margin-left: auto; display: flex; align-items: baseline; gap: 4px; }
+
+    .num {
+      font-size: 32px; font-weight: 700; color: #fff; letter-spacing: -.03em;
+      font-feature-settings: 'tnum';
+    }
+
+    .unit { font-size: 13px; color: var(--dim); }
+
+    .crown { font-size: 15px; margin-left: 2px; }
+
+    .bar-track { height: 3px; background: rgba(255,255,255,.06); border-radius: 2px; overflow: hidden; }
+
+    .bar-fill {
+      height: 100%; border-radius: 2px; width: 0;
+      transition: width 1.3s cubic-bezier(.22,1,.36,1);
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .card.is-top .bar-fill {
+      background: linear-gradient(90deg, var(--accent), #fff);
+      box-shadow: 0 0 18px var(--accent);
+    }
+
+    /* ── FLOW ───────────────────────────────── */
+    .flow-section { margin-bottom: 44px; }
+
+    .flow-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .flow-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 13px 20px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace; font-size: 13px;
+    }
+
+    .f-from { color: var(--accent); }
+    .f-mid {
+      flex: 1; display: flex; align-items: center; gap: 6px;
+      color: var(--dim); font-size: 11px;
+    }
+    .f-line {
+      flex: 1; height: 1px;
+      background: linear-gradient(90deg, rgba(0,212,255,.3), rgba(168,85,247,.3));
+    }
+    .f-to { color: var(--accent2); }
+    .f-cnt { margin-left: auto; color: #fff; font-weight: 700; font-size: 15px; }
+
+    /* ── FOOTER ─────────────────────────────── */
+    footer {
+      text-align: center; padding-top: 40px;
+      border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--dim);
+    }
+
+    footer a { color: var(--accent); text-decoration: none; }
+
+    .stack-label {
+      margin-top: 8px; opacity: .4; font-size: 10px;
+      letter-spacing: .1em;
+    }
+
+    /* ── STATE ──────────────────────────────── */
+    .state {
+      text-align: center; padding: 60px;
+      font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--dim);
+    }
+
+    @media (max-width: 600px) {
+      .wrap { padding: 36px 16px 60px; }
+      .meta { gap: 6px 16px; }
+      .num { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="wrap">
+
+  <header class="header">
+    <div class="eyebrow">ひとなみ社 // Visitor Intelligence</div>
+    <h1>水上ビル<br><em>人流モニター</em></h1>
+    <div class="tagline">
+      <span class="live-dot"></span>
+      BLE SENSOR NETWORK — LIVE
+      <span id="clock"></span>
+    </div>
+  </header>
+
+  <div class="meta" id="meta">
+    <div><span class="meta-val">—</span>日付</div>
+    <div><span class="meta-val" id="meta-hour">—</span>時台</div>
+    <div><span class="meta-val" id="meta-total">—</span>商店街合計</div>
+  </div>
+
+  <div class="sec-label">// エリア別来訪者数</div>
+  <div class="areas" id="areas"><div class="state">データ取得中...</div></div>
+
+  <div class="flow-section" id="flow-sec" style="display:none">
+    <div class="sec-label">// 人の移動フロー</div>
+    <div class="flow-list" id="flow-list"></div>
+  </div>
+
+  <footer>
+    <a href="./index.html">← ひとなみ社 HP</a>
+    <div class="stack-label">BLE → BigQuery → GitHub Actions → GitHub Pages</div>
+  </footer>
+
+</div>
+
+<script>
+/* ── CANVAS BACKGROUND ─────────────────────────── */
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+const resize = () => { W = canvas.width = innerWidth; H = canvas.height = innerHeight; };
+resize(); addEventListener('resize', resize);
+
+const pts = Array.from({length: 90}, () => ({
+  x: Math.random() * 1920, y: Math.random() * 1080,
+  vx: (Math.random()-.5)*.25, vy: (Math.random()-.5)*.25,
+  r: Math.random()*1.2+.4, a: Math.random()*.35+.08,
+}));
+
+function drawBg() {
+  ctx.clearRect(0, 0, W, H);
+  for (const p of pts) {
+    p.x = (p.x + p.vx + W) % W;
+    p.y = (p.y + p.vy + H) % H;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.28);
+    ctx.fillStyle = `rgba(0,212,255,${p.a})`; ctx.fill();
+  }
+  for (let i = 0; i < pts.length; i++) {
+    for (let j = i+1; j < pts.length; j++) {
+      const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < 130) {
+        ctx.beginPath();
+        ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
+        ctx.strokeStyle = `rgba(0,212,255,${.055*(1-d/130)})`; ctx.lineWidth=.6; ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawBg);
+}
+drawBg();
+
+/* ── CLOCK ─────────────────────────────────────── */
+const clockEl = document.getElementById('clock');
+setInterval(() => {
+  clockEl.textContent = new Date().toLocaleTimeString('ja-JP');
+}, 1000);
+clockEl.textContent = new Date().toLocaleTimeString('ja-JP');
+
+/* ── COUNTER ───────────────────────────────────── */
+function countUp(el, target, ms = 1100) {
+  const t0 = performance.now();
+  const step = now => {
+    const p = Math.min((now-t0)/ms, 1);
+    const ease = 1 - Math.pow(1-p, 3);
+    el.textContent = Math.round(ease * target);
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* ── RENDER ────────────────────────────────────── */
+const SHOP = ['A棟','B棟','C棟','D棟'];
+
+function render(data) {
+  const rows = data.rows || [];
+  const shop = rows.filter(r => SHOP.includes(r.loc_id));
+  const other = rows.filter(r => !SHOP.includes(r.loc_id));
+  const all = [...shop, ...other];
+  const max = Math.max(...rows.map(r => r.visitor_count), 1);
+  const top = rows.reduce((a, b) => b.visitor_count > a.visitor_count ? b : a, rows[0] || {});
+  const shopTotal = shop.reduce((s, r) => s + r.visitor_count, 0);
+
+  document.getElementById('meta-hour').textContent  = data.hour + '時';
+  document.getElementById('meta-total').textContent = shopTotal + '人';
+  document.getElementById('meta').querySelector(':first-child .meta-val').textContent = data.date;
+
+  const areasEl = document.getElementById('areas');
+  areasEl.innerHTML = '';
+
+  all.forEach((r, i) => {
+    const isTop = r.loc_id === top.loc_id;
+    const pct = (r.visitor_count / max * 100).toFixed(1);
+
+    const card = document.createElement('div');
+    card.className = 'card' + (isTop ? ' is-top' : '');
+    card.style.animationDelay = i * 60 + 'ms';
+    card.innerHTML = `
+      <div class="card-row">
+        <div class="loc">${r.loc_id}</div>
+        <div class="badges">${r.stay_count > 0 ? `<span class="badge-stay">滞在 ${r.stay_count}人</span>` : ''}</div>
+        <div class="num-wrap">
+          <span class="num">0</span><span class="unit">人${isTop ? '<span class="crown">👑</span>' : ''}</span>
+        </div>
+      </div>
+      <div class="bar-track"><div class="bar-fill"></div></div>
+    `;
+    areasEl.appendChild(card);
+
+    setTimeout(() => {
+      countUp(card.querySelector('.num'), r.visitor_count, 900 + i * 80);
+      requestAnimationFrame(() => { card.querySelector('.bar-fill').style.width = pct + '%'; });
+    }, 80 + i * 60);
+  });
+
+  const flows = data.flows || [];
+  if (flows.length) {
+    document.getElementById('flow-sec').style.display = '';
+    document.getElementById('flow-list').innerHTML = flows.map(f => `
+      <div class="flow-item">
+        <span class="f-from">${f.from}</span>
+        <span class="f-mid"><span class="f-line"></span>→</span>
+        <span class="f-to">${f.to}</span>
+        <span class="f-cnt">${f.cnt}人</span>
+      </div>
+    `).join('');
+  }
+}
+
+/* ── LOAD ──────────────────────────────────────── */
+function load() {
+  fetch('./data/yoho.json?t=' + Date.now())
+    .then(r => r.json())
+    .then(res => {
+      if (res.status === 'ok') render(res.data);
+      else document.getElementById('areas').innerHTML = '<div class="state">データ準備中...</div>';
+    })
+    .catch(() => {
+      document.getElementById('areas').innerHTML = '<div class="state" style="color:#ff4466">接続エラー</div>';
+    });
+}
+
+load();
+setInterval(load, 3600000);
+</script>
+</body>
+</html>

@@ -348,7 +348,13 @@ function renderYoho(data) {
 function loadYoho() {
   fetch(DATA_URL + '?t=' + Date.now())
     .then(r => r.json())
-    .then(res => renderYoho(res.status === 'ok' ? res.data : null))
+    .then(res => {
+      if (res.status === 'ok') {
+        renderYoho(res.data);
+      } else {
+        document.getElementById('yoho-body').innerHTML = '<span style="color:#aaa;">データ準備中... しばらくお待ちください</span>';
+      }
+    })
     .catch(() => {
       document.getElementById('yoho-body').innerHTML = '<span style="color:red;">データ取得エラー</span>';
     });

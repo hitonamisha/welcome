@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>合同会社ひとなみ社 — 商店街に、人の流れを。</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:     #080d18;
+      --bg2:    #0d1424;
+      --cyan:   #00d4ff;
+      --purple: #a855f7;
+      --green:  #00ffaa;
+      --text:   #c8deff;
+      --dim:    rgba(200,222,255,.45);
+      --border: rgba(200,222,255,.08);
+      --card:   rgba(255,255,255,.03);
+      --r:      14px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Space Grotesk', system-ui, sans-serif; line-height: 1.6; overflow-x: hidden; }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ────────────────────────────────
+       NOISE OVERLAY
+    ──────────────────────────────── */
+    body::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: .025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px;
+    }
+
+    /* ────────────────────────────────
+       NAV
+    ──────────────────────────────── */
+    nav {
+      position: fixed; top: 0; inset-x: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px,5vw,60px);
+      height: 64px;
+      background: rgba(8,13,24,.7);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      transition: background .3s;
+    }
+
+    .nav-logo {
+      font-size: 16px; font-weight: 700; letter-spacing: -.01em;
+      color: #fff;
+    }
+    .nav-logo span { color: var(--cyan); }
+
+    .nav-links { display: flex; gap: 28px; font-size: 13px; color: var(--dim); }
+    .nav-links a:hover { color: #fff; }
+    @media(max-width:600px){ .nav-links { display: none; } }
+
+    .nav-cta {
+      font-size: 13px; font-weight: 600; padding: 8px 20px;
+      background: var(--cyan); color: #000; border-radius: 8px;
+      transition: opacity .2s, transform .15s;
+    }
+    .nav-cta:hover { opacity: .85; transform: translateY(-1px); }
+
+    /* ────────────────────────────────
+       HERO
+    ──────────────────────────────── */
+    .hero {
+      position: relative; min-height: 100svh;
+      display: flex; align-items: center;
+      padding: 120px clamp(20px,5vw,80px) 80px;
+      overflow: hidden;
+    }
+
+    /* Gradient blobs */
+    .blob {
+      position: absolute; border-radius: 50%; filter: blur(80px);
+      pointer-events: none; will-change: transform;
+    }
+    .blob-1 { width: 700px; height: 700px; background: radial-gradient(circle, rgba(0,212,255,.18), transparent 70%); top: -200px; right: -100px; animation: drift1 12s ease-in-out infinite; }
+    .blob-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(168,85,247,.14), transparent 70%); bottom: -100px; left: -80px; animation: drift2 15s ease-in-out infinite; }
+    .blob-3 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(0,255,170,.1), transparent 70%); top: 40%; left: 40%; animation: drift3 10s ease-in-out infinite; }
+
+    @keyframes drift1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-40px,30px)} }
+    @keyframes drift2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(30px,-40px)} }
+    @keyframes drift3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-20px,20px)} }
+
+    /* Grid */
+    .hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+
+    .hero-inner { position: relative; max-width: 700px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 5px 14px 5px 8px;
+      background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.2);
+      border-radius: 100px; font-size: 12px; color: var(--cyan);
+      font-family: 'JetBrains Mono', monospace; letter-spacing: .05em;
+      margin-bottom: 28px;
+    }
+    .badge-dot { width:7px; height:7px; border-radius:50%; background:var(--green); box-shadow:0 0 8px var(--green); animation:blink 2s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 76px);
+      font-weight: 700; letter-spacing: -.03em; line-height: 1.05;
+      color: #fff; margin-bottom: 24px;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(120deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(15px,2vw,18px); color: var(--dim); line-height: 1.7;
+      max-width: 520px; margin-bottom: 40px;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    .btn-primary {
+      padding: 14px 32px; background: var(--cyan); color: #000;
+      font-weight: 700; font-size: 15px; border-radius: 10px;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,212,255,.3); }
+
+    .btn-ghost {
+      padding: 14px 28px; border: 1px solid var(--border); color: var(--text);
+      font-size: 15px; border-radius: 10px;
+      transition: border-color .2s, background .2s;
+    }
+    .btn-ghost:hover { border-color: rgba(200,222,255,.3); background: rgba(255,255,255,.04); }
+
+    /* BLE diagram */
+    .hero-visual {
+      position: absolute; right: clamp(20px,5vw,80px); top: 50%; transform: translateY(-50%);
+      width: min(380px, 40vw); aspect-ratio: 1;
+    }
+    @media(max-width:900px){ .hero-visual { display: none; } }
+
+    /* ────────────────────────────────
+       STATS BAR
+    ──────────────────────────────── */
+    .stats {
+      display: flex; flex-wrap: wrap; gap: 1px;
+      background: var(--border);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+
+    .stat {
+      flex: 1; min-width: 180px;
+      padding: 32px 36px;
+      background: var(--bg);
+    }
+
+    .stat-num {
+      font-size: 40px; font-weight: 700; letter-spacing: -.03em; color: #fff;
+      font-feature-settings: 'tnum';
+    }
+    .stat-num span { font-size: 20px; color: var(--cyan); margin-left: 4px; }
+    .stat-label { font-size: 13px; color: var(--dim); margin-top: 4px; }
+
+    /* ────────────────────────────────
+       SECTION COMMONS
+    ──────────────────────────────── */
+    section { padding: clamp(80px, 12vw, 140px) clamp(20px, 5vw, 80px); }
+
+    .section-tag {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      letter-spacing: .25em; text-transform: uppercase;
+      color: var(--cyan); opacity: .65; margin-bottom: 16px;
+    }
+
+    .section-h {
+      font-size: clamp(28px, 4vw, 44px); font-weight: 700;
+      letter-spacing: -.02em; color: #fff; line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .section-h .grad {
+      background: linear-gradient(120deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .section-sub { font-size: 16px; color: var(--dim); max-width: 540px; line-height: 1.7; margin-bottom: 56px; }
+
+    .center { text-align: center; }
+    .center .section-sub { margin-left: auto; margin-right: auto; }
+
+    /* ────────────────────────────────
+       FEATURES
+    ──────────────────────────────── */
+    #features { background: var(--bg); }
+
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px; max-width: 1100px; margin: 0 auto;
+    }
+
+    .feat {
+      padding: 32px; background: var(--card);
+      border: 1px solid var(--border); border-radius: var(--r);
+      transition: border-color .25s, transform .25s;
+    }
+    .feat:hover { border-color: rgba(0,212,255,.25); transform: translateY(-3px); }
+
+    .feat-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: rgba(0,212,255,.1); border: 1px solid rgba(0,212,255,.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 20px;
+    }
+
+    .feat h3 { font-size: 17px; font-weight: 600; color: #fff; margin-bottom: 10px; }
+    .feat p  { font-size: 14px; color: var(--dim); line-height: 1.7; }
+
+    /* ────────────────────────────────
+       HOW IT WORKS
+    ──────────────────────────────── */
+    #how { background: var(--bg2); }
+
+    .how-inner { max-width: 1100px; margin: 0 auto; }
+
+    .steps {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: 0; position: relative;
+    }
+
+    .steps::before {
+      content: ''; position: absolute; top: 28px; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), transparent);
+      opacity: .3;
+    }
+    @media(max-width:680px){ .steps::before { display: none; } }
+
+    .step { padding: 0 32px 0 0; position: relative; }
+    .step:last-child { padding-right: 0; }
+
+    .step-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--bg); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--cyan);
+      margin-bottom: 20px; position: relative; z-index: 1;
+    }
+
+    .step h3 { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .step p  { font-size: 14px; color: var(--dim); line-height: 1.7; }
+
+    .step-tag {
+      font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .2em;
+      color: var(--cyan); opacity: .5; margin-bottom: 6px; text-transform: uppercase;
+    }
+
+    /* ────────────────────────────────
+       PRICING
+    ──────────────────────────────── */
+    #pricing { background: var(--bg); }
+
+    .pricing-wrap { max-width: 880px; margin: 0 auto; }
+
+    .pricing-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    @media(max-width:620px){ .pricing-grid { grid-template-columns: 1fr; } }
+
+    .price-card {
+      padding: 40px; background: var(--card);
+      border: 1px solid var(--border); border-radius: var(--r);
+      position: relative; overflow: hidden;
+      transition: border-color .25s;
+    }
+    .price-card:hover { border-color: rgba(0,212,255,.25); }
+
+    .price-card.featured {
+      border-color: rgba(0,212,255,.3);
+      background: rgba(0,212,255,.04);
+    }
+    .price-card.featured::before {
+      content: 'おすすめ'; position: absolute; top: 18px; right: -24px;
+      background: var(--cyan); color: #000; font-size: 10px; font-weight: 700;
+      padding: 4px 36px; transform: rotate(45deg); letter-spacing: .1em;
+    }
+
+    .price-tier { font-size: 13px; color: var(--dim); margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+    .price-name { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 24px; }
+
+    .price-num {
+      font-size: 48px; font-weight: 700; color: #fff; letter-spacing: -.03em;
+      line-height: 1; margin-bottom: 4px;
+    }
+    .price-num sup { font-size: 20px; vertical-align: super; }
+    .price-num sub { font-size: 16px; color: var(--dim); vertical-align: baseline; }
+
+    .price-monthly { font-size: 13px; color: var(--dim); margin-bottom: 28px; }
+    .price-monthly strong { color: var(--text); }
+
+    .price-divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+    .price-features { display: flex; flex-direction: column; gap: 10px; }
+    .price-feat { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text); }
+    .price-feat::before { content: '✓'; color: var(--cyan); font-weight: 700; flex-shrink: 0; }
+
+    /* ────────────────────────────────
+       COMPANY
+    ──────────────────────────────── */
+    #company { background: var(--bg2); }
+
+    .company-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    @media(max-width:760px){ .company-inner { grid-template-columns: 1fr; gap: 40px; } }
+
+    .company-table { width: 100%; border-collapse: collapse; }
+    .company-table tr { border-bottom: 1px solid var(--border); }
+    .company-table tr:first-child { border-top: 1px solid var(--border); }
+    .company-table th {
+      width: 120px; padding: 16px 0; text-align: left;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      letter-spacing: .1em; color: var(--dim); text-transform: uppercase; font-weight: 400;
+    }
+    .company-table td { padding: 16px 0; font-size: 15px; color: var(--text); }
+
+    /* ────────────────────────────────
+       CTA BANNER
+    ──────────────────────────────── */
+    .cta-banner {
+      position: relative; overflow: hidden;
+      padding: clamp(80px,10vw,120px) clamp(20px,5vw,80px);
+      background: var(--bg); text-align: center;
+    }
+    .cta-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,212,255,.07), transparent);
+    }
+    .cta-banner .section-h { margin-bottom: 12px; }
+    .cta-banner .section-sub { margin-bottom: 40px; }
+
+    /* ────────────────────────────────
+       FOOTER
+    ──────────────────────────────── */
+    footer {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 40px clamp(20px,5vw,80px);
+      display: flex; flex-wrap: wrap; gap: 16px;
+      justify-content: space-between; align-items: center;
+    }
+    .footer-logo { font-size: 15px; font-weight: 700; color: #fff; }
+    .footer-logo span { color: var(--cyan); }
+    .footer-copy { font-size: 12px; color: var(--dim); font-family: 'JetBrains Mono', monospace; }
+    .footer-links { display: flex; gap: 20px; font-size: 13px; color: var(--dim); }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ────────────────────────────────
+       SCROLL REVEAL
+    ──────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ────────────────────────────────
+       BLE SVG ANIMATION
+    ──────────────────────────────── */
+    .ble-canvas { width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ひとなみ<span>社</span></div>
+  <div class="nav-links">
+    <a href="#features">サービス</a>
+    <a href="#how">仕組み</a>
+    <a href="#pricing">料金</a>
+    <a href="#company">会社情報</a>
+  </div>
+  <a href="#contact" class="nav-cta">お問い合わせ</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="badge-dot"></span>豊橋発・スタートアップ</div>
+    <h1>商店街に、<br><span class="grad">人の流れを。</span></h1>
+    <p class="hero-sub">BLEセンサーで来街者を見える化。低コストで設置でき、リアルタイムで人流データを提供。商店街のDXを、すぐに始められます。</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">無料相談する</a>
+      <a href="./viz.html" class="btn-ghost">ライブデータを見る →</a>
+    </div>
+  </div>
+
+  <!-- BLE diagram -->
+  <div class="hero-visual">
+    <svg class="ble-canvas" viewBox="0 0 380 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#00d4ff" stop-opacity=".5"/>
+          <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#a855f7" stop-opacity=".4"/>
+          <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <!-- Connection lines -->
+      <g opacity=".25" stroke="#00d4ff" stroke-width=".8">
+        <line x1="190" y1="190" x2="80"  y2="100"/><line x1="190" y1="190" x2="300" y2="80"/>
+        <line x1="190" y1="190" x2="60"  y2="270"/><line x1="190" y1="190" x2="310" y2="270"/>
+        <line x1="190" y1="190" x2="160" y2="60"/> <line x1="190" y1="190" x2="230" y2="320"/>
+        <line x1="80"  y1="100" x2="160" y2="60"/> <line x1="300" y1="80" x2="160"  y2="60"/>
+        <line x1="60"  y1="270" x2="310" y2="270"/>
+      </g>
+
+      <!-- Center node -->
+      <circle cx="190" cy="190" r="44" fill="url(#glow1)" opacity=".6"/>
+      <circle cx="190" cy="190" r="22" fill="#00d4ff" opacity=".12"/>
+      <circle cx="190" cy="190" r="9"  fill="#00d4ff"/>
+      <circle cx="190" cy="190" r="9"  fill="#00d4ff" opacity=".4">
+        <animate attributeName="r" from="9" to="30" dur="2.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" from=".4" to="0" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- Outer nodes -->
+      <g fill="#a855f7">
+        <circle cx="80"  cy="100" r="6"/><circle cx="300" cy="80"  r="6"/>
+        <circle cx="60"  cy="270" r="6"/><circle cx="310" cy="270" r="6"/>
+        <circle cx="160" cy="60"  r="6"/><circle cx="230" cy="320" r="6"/>
+        <circle cx="330" cy="185" r="6"/><circle cx="50"  cy="185" r="6"/>
+      </g>
+
+      <!-- Pulse rings on outer nodes -->
+      <g fill="none" stroke="#a855f7" stroke-width="1">
+        <circle cx="80"  cy="100" r="6" opacity=".5">
+          <animate attributeName="r" from="6" to="18" dur="3s" begin="0s"   repeatCount="indefinite"/>
+          <animate attributeName="opacity" from=".5" to="0" dur="3s" begin="0s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="300" cy="80"  r="6" opacity=".5">
+          <animate attributeName="r" from="6" to="18" dur="3s" begin=".7s"  repeatCount="indefinite"/>
+          <animate attributeName="opacity" from=".5" to="0" dur="3s" begin=".7s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="60"  cy="270" r="6" opacity=".5">
+          <animate attributeName="r" from="6" to="18" dur="3s" begin="1.4s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" from=".5" to="0" dur="3s" begin="1.4s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="310" cy="270" r="6" opacity=".5">
+          <animate attributeName="r" from="6" to="18" dur="3s" begin="2.1s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" from=".5" to="0" dur="3s" begin="2.1s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+
+      <!-- Labels -->
+      <g font-family="JetBrains Mono, monospace" font-size="9" fill="#00d4ff" opacity=".5" letter-spacing="1">
+        <text x="90"  y="96" >A棟</text><text x="308" y="76" >B棟</text>
+        <text x="68"  y="284">C棟</text><text x="318" y="284">D棟</text>
+        <text x="168" y="56" >図書館</text>
+      </g>
+
+      <!-- Data particles moving along lines -->
+      <circle r="2.5" fill="#00ffaa" opacity=".8">
+        <animateMotion dur="2s" repeatCount="indefinite" path="M190,190 L80,100"/>
+      </circle>
+      <circle r="2.5" fill="#00ffaa" opacity=".8">
+        <animateMotion dur="2.5s" begin=".5s" repeatCount="indefinite" path="M190,190 L310,270"/>
+      </circle>
+      <circle r="2.5" fill="#00ffaa" opacity=".8">
+        <animateMotion dur="1.8s" begin="1s" repeatCount="indefinite" path="M190,190 L160,60"/>
+      </circle>
+    </svg>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat reveal">
+    <div class="stat-num">5<span>棟</span></div>
+    <div class="stat-label">水上ビル センサー設置数</div>
+  </div>
+  <div class="stat reveal" style="transition-delay:.1s">
+    <div class="stat-num">24<span>h</span></div>
+    <div class="stat-label">稼働中（休まずデータ収集）</div>
+  </div>
+  <div class="stat reveal" style="transition-delay:.2s">
+    <div class="stat-num">1<span>h</span></div>
+    <div class="stat-label">データ更新サイクル</div>
+  </div>
+  <div class="stat reveal" style="transition-delay:.3s">
+    <div class="stat-num">0<span>円</span></div>
+    <div class="stat-label">相談料（まず話しましょう）</div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div style="max-width:1100px; margin:0 auto;">
+    <div class="center reveal">
+      <div class="section-tag">// サービス</div>
+      <h2 class="section-h">商店街DXを、<span class="grad">まるごと支援</span></h2>
+      <p class="section-sub">センサー設置から可視化・自動配信まで、ひとなみ社がワンストップで提供します。</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat reveal" style="transition-delay:.05s">
+        <div class="feat-icon">📡</div>
+        <h3>BLE人流計測</h3>
+        <p>スマートフォンのBluetooth電波を検知し、個人を特定せずに来街者数・滞在時間を計測。設置は数時間で完了します。</p>
+      </div>
+      <div class="feat reveal" style="transition-delay:.1s">
+        <div class="feat-icon">📊</div>
+        <h3>リアルタイムダッシュボード</h3>
+        <p>Looker Studioと連携した美しいダッシュボードで、エリア別・時間帯別の人流を一覧。スマホでもPCでも確認できます。</p>
+      </div>
+      <div class="feat reveal" style="transition-delay:.15s">
+        <div class="feat-icon">🤖</div>
+        <h3>ひと気予報ボット</h3>
+        <p>「今の水上ビルは何人？」をDiscordやLINEに1時間ごと自動配信。店舗スタッフが人流を把握して動けます。</p>
+      </div>
+      <div class="feat reveal" style="transition-delay:.2s">
+        <div class="feat-icon">💬</div>
+        <h3>AIチャットボット</h3>
+        <p>グループLINEに投稿するだけで情報が自動集約され、公式LINEアカウントから来街者へ自動配信。情報発信の手間をゼロに。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="how-inner">
+    <div class="center reveal">
+      <div class="section-tag">// 仕組み</div>
+      <h2 class="section-h">シンプルな<span class="grad">3ステップ</span></h2>
+      <p class="section-sub">難しい設定は不要。センサーを置くだけで、あとは自動でデータが流れていきます。</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal" style="transition-delay:.05s">
+        <div class="step-tag">Step 01</div>
+        <div class="step-num">01</div>
+        <h3>センサー設置</h3>
+        <p>M5NanoC6センサーを棟ごとに設置。電源を入れるだけで自動的にBLEスキャンを開始します。WiFiがない場所でも対応可能。</p>
+      </div>
+      <div class="step reveal" style="transition-delay:.1s">
+        <div class="step-tag">Step 02</div>
+        <div class="step-num">02</div>
+        <h3>自動集計・保存</h3>
+        <p>センサーのデータはESP-NOW経由でゲートウェイに集約。クラウド（BigQuery）に自動保存されます。欠損も自動検知。</p>
+      </div>
+      <div class="step reveal" style="transition-delay:.15s">
+        <div class="step-tag">Step 03</div>
+        <div class="step-num">03</div>
+        <h3>可視化・配信</h3>
+        <p>ダッシュボード・DiscordBot・LINE・ウェブサイトへリアルタイム配信。見たい人が、見たい形で確認できます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-wrap">
+    <div class="center reveal">
+      <div class="section-tag">// 料金</div>
+      <h2 class="section-h">シンプルな<span class="grad">価格体系</span></h2>
+      <p class="section-sub">まず相談から。環境に合わせた見積もりを無料でご提案します。</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <div class="price-tier">WiFiあり / Standard</div>
+        <div class="price-name">スタンダードプラン</div>
+        <div class="price-num"><sup>¥</sup>50,000<sub>〜</sub></div>
+        <div class="price-monthly">初期費用 ＋ 月額 <strong>¥20,000〜</strong></div>
+        <hr class="price-divider">
+        <div class="price-features">
+          <div class="price-feat">BLEセンサー設置（WiFi活用）</div>
+          <div class="price-feat">BigQuery自動集計</div>
+          <div class="price-feat">ダッシュボード提供</div>
+          <div class="price-feat">ひと気予報ボット</div>
+          <div class="price-feat">月次レポート</div>
+        </div>
+      </div>
+      <div class="price-card featured reveal" style="transition-delay:.1s">
+        <div class="price-tier">WiFiなし / Full Setup</div>
+        <div class="price-name">フルセットアッププラン</div>
+        <div class="price-num"><sup>¥</sup>100,000<sub>〜</sub></div>
+        <div class="price-monthly">初期費用 ＋ 月額 <strong>¥20,000〜</strong></div>
+        <hr class="price-divider">
+        <div class="price-features">
+          <div class="price-feat">WiFi整備込みのフル設置</div>
+          <div class="price-feat">BigQuery自動集計</div>
+          <div class="price-feat">ダッシュボード提供</div>
+          <div class="price-feat">ひと気予報ボット</div>
+          <div class="price-feat">AIチャットボット（LINE）</div>
+          <div class="price-feat">月次レポート＋現地サポート</div>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:24px; font-size:13px; color:var(--dim);">※ 拠点数・要件によって変動します。まずはお気軽にご相談ください。</p>
+  </div>
+</section>
+
+<!-- COMPANY -->
+<section id="company">
+  <div class="company-inner">
+    <div class="reveal">
+      <div class="section-tag">// 会社情報</div>
+      <h2 class="section-h">ひとなみ社について</h2>
+      <p style="font-size:15px; color:var(--dim); line-height:1.8;">
+        愛知県豊橋市の水上ビル商店街でBLE人流計測を実践しながら、同じ課題を持つ商店街へ展開中。「まずやってみる」のDCAP哲学で、小さく始めて確実に育てます。
+      </p>
+    </div>
+    <div class="reveal" style="transition-delay:.1s">
+      <table class="company-table">
+        <tr><th>社名</th><td>合同会社ひとなみ社</td></tr>
+        <tr><th>所在地</th><td>愛知県豊橋市</td></tr>
+        <tr><th>設立</th><td>2026年12月予定</td></tr>
+        <tr><th>事業</th><td>BLE人流データ活用 / 商店街DX支援</td></tr>
+        <tr><th>連絡先</th><td>info@hitonamisha.com</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section id="contact" class="cta-banner">
+  <div style="position:relative; z-index:1;">
+    <div class="section-tag">// お問い合わせ</div>
+    <h2 class="section-h reveal">まず、話してみませんか。<br><span class="grad">相談は無料です。</span></h2>
+    <p class="section-sub reveal" style="transition-delay:.1s">「うちの商店街でも使えそう？」から歓迎です。現地でのデモもご相談ください。</p>
+    <div class="reveal" style="transition-delay:.2s">
+      <a href="mailto:info@hitonamisha.com" class="btn-primary" style="display:inline-block;">
+        メールで相談する →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ひとなみ<span>社</span></div>
+  <div class="footer-links">
+    <a href="./index.html">ダサいHP</a>
+    <a href="./viz.html">人流モニター</a>
+  </div>
+  <div class="footer-copy">© 2026 合同会社ひとなみ社</div>
+</footer>
+
+<script>
+/* ── SCROLL REVEAL ─────────────────────────────── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ── NAV scroll style ──────────────────────────── */
+const nav = document.querySelector('nav');
+addEventListener('scroll', () => {
+  nav.style.background = scrollY > 40 ? 'rgba(8,13,24,.92)' : 'rgba(8,13,24,.7)';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+name: Update Yoho Data
+
+on:
+  schedule:
+    - cron: '5 * * * *'   # 毎時5分に実行
+  workflow_dispatch:        # 手動実行も可能
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch yoho data from GAS
+        run: |
+          mkdir -p data
+          curl -sL \
+            "https://script.google.com/macros/s/AKfycbyG9uM5R3HzzjKwIJfIoPZ19tB7kEx4mx0trZEVRIi7s_a8B9Pp3lH3SeENHNgYy7g/exec" \
+            --max-time 30 \
+            --retry 3 \
+            -o data/yoho.json
+
+      - name: Commit if changed
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add data/yoho.json
+          git diff --staged --quiet || git commit -m "data: yoho $(date -u +'%Y-%m-%d %H:00 UTC') [skip ci]"
+          git push

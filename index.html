@@ -292,7 +292,7 @@
 </div>
 
 <script>
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbyG9uM5R3HzzjKwIJfIoPZ19tB7kEx4mx0trZEVRIi7s_a8B9Pp3lH3SeENHNgYy7g/exec';
+const DATA_URL = './data/yoho.json';
 const SHOPPING_AREA = ['A棟','B棟','C棟','D棟'];
 
 function bar(n, max) {
@@ -346,25 +346,11 @@ function renderYoho(data) {
 }
 
 function loadYoho() {
-  fetch(GAS_URL, { redirect: 'follow', credentials: 'omit' })
+  fetch(DATA_URL + '?t=' + Date.now())
     .then(r => r.json())
     .then(res => renderYoho(res.status === 'ok' ? res.data : null))
     .catch(() => {
-      // fetchが失敗した場合はJSONPにフォールバック
-      window._yohoCallback = function(res) {
-        renderYoho(res.status === 'ok' ? res.data : null);
-        const s = document.getElementById('_yoho_script');
-        if (s) s.remove();
-      };
-      const old = document.getElementById('_yoho_script');
-      if (old) old.remove();
-      const s = document.createElement('script');
-      s.id  = '_yoho_script';
-      s.src = GAS_URL + '?callback=_yohoCallback';
-      s.onerror = () => {
-        document.getElementById('yoho-body').innerHTML = '<span style="color:red;">接続エラー</span>';
-      };
-      document.head.appendChild(s);
+      document.getElementById('yoho-body').innerHTML = '<span style="color:red;">データ取得エラー</span>';
     });
 }
 

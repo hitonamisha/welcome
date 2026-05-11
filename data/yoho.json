@@ -1,1 +1,1 @@
-{"status":"ok","data":{"date":"2026-05-12","hour":1,"rows":[{"loc_id":"A棟","visitor_count":1,"avg_dwell":0,"stay_count":0},{"loc_id":"C棟","visitor_count":10,"avg_dwell":11,"stay_count":10},{"loc_id":"D棟","visitor_count":4,"avg_dwell":0,"stay_count":0},{"loc_id":"ひとなる図書館","visitor_count":3,"avg_dwell":0,"stay_count":0}],"flows":[]}}
+{"status":"ok","data":{"date":"2026-05-12","hour":3,"rows":[{"loc_id":"C棟","visitor_count":9,"avg_dwell":12,"stay_count":9}],"flows":[]}}

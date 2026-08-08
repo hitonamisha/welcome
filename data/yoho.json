@@ -1,1 +1,1 @@
-{"status":"ok","data":{"date":"2026-08-09","hour":4,"rows":[{"loc_id":"B棟","visitor_count":5,"avg_dwell":0,"stay_count":0},{"loc_id":"C棟","visitor_count":5,"avg_dwell":12,"stay_count":5},{"loc_id":"D棟","visitor_count":2,"avg_dwell":0,"stay_count":0}],"flows":[]}}
+{"status":"ok","data":{"date":"2026-08-09","hour":5,"rows":[{"loc_id":"B棟","visitor_count":5,"avg_dwell":0,"stay_count":0},{"loc_id":"C棟","visitor_count":5,"avg_dwell":11,"stay_count":5},{"loc_id":"D棟","visitor_count":16,"avg_dwell":0,"stay_count":2}],"flows":[]}}

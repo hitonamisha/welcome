@@ -4,181 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>★合同会社ひとなみ舎★ようこそ！！</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap');
-
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(45deg,
-        #ff0000, #ff7700, #ffff00, #00ff00,
-        #0000ff, #8b00ff, #ff00ff, #ff0000);
-      background-size: 400% 400%;
-      animation: rainbow 3s ease infinite;
-      font-family: 'Zen Kurenaido', 'Comic Sans MS', cursive;
-      overflow-x: hidden;
-    }
-
-    @keyframes rainbow {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0; }
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-20px); }
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .title-box {
-      background: #fff;
-      border: 8px dashed #ff00ff;
-      padding: 20px;
-      margin: 20px 0;
-      box-shadow: 10px 10px 0 #ffff00, 20px 20px 0 #ff0000;
-    }
-
-    h1 {
-      font-size: 52px;
-      color: #ff00cc;
-      text-shadow:
-        3px 3px 0 #ffff00,
-        6px 6px 0 #0000ff;
-      animation: bounce 1s ease infinite;
-      margin: 0;
-    }
-
-    .sub {
-      font-size: 24px;
-      color: #0000ff;
-      animation: blink 0.8s step-end infinite;
-      font-weight: bold;
-    }
-
-    marquee {
-      background: #000;
-      color: #00ff00;
-      font-size: 20px;
-      padding: 8px 0;
-      font-weight: bold;
-      letter-spacing: 4px;
-    }
-
-    .heart {
-      color: #ff0000;
-      font-size: 32px;
-      animation: spin 2s linear infinite;
-      display: inline-block;
-    }
-
-    .section {
-      background: rgba(255,255,255,0.85);
-      border: 6px solid;
-      border-color: #ff0000 #0000ff #00ff00 #ff00ff;
-      margin: 20px 0;
-      padding: 20px;
-    }
-
-    .section h2 {
-      font-size: 32px;
-      margin: 0 0 12px;
-      text-shadow: 2px 2px 0 #ff9900;
-    }
-
-    .section p {
-      font-size: 18px;
-      line-height: 1.8;
-      color: #333;
-    }
-
-    .badge {
-      display: inline-block;
-      background: #ff0000;
-      color: #ffff00;
-      font-size: 14px;
-      font-weight: bold;
-      padding: 4px 10px;
-      border-radius: 20px;
-      margin: 4px;
-      border: 2px solid #000;
-      animation: blink 1.5s step-end infinite;
-    }
-
-    .service-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .service-card {
-      background: linear-gradient(135deg, #ffff00, #ff00ff);
-      border: 4px solid #000;
-      padding: 16px;
-      font-size: 16px;
-      font-weight: bold;
-    }
-
-    .emoji-row {
-      font-size: 40px;
-      margin: 10px 0;
-      animation: bounce 1.5s ease infinite;
-      display: block;
-    }
-
-    .ufo {
-      font-size: 60px;
-      animation: spin 4s linear infinite;
-      display: inline-block;
-    }
-
-    .footer {
-      background: #000;
-      color: #00ff00;
-      padding: 20px;
-      font-size: 14px;
-      margin-top: 20px;
-      border: 4px solid #ff00ff;
-    }
-
-    .under-construction {
-      font-size: 28px;
-      color: #ff0000;
-      background: #ffff00;
-      padding: 10px;
-      border: 4px dashed #ff0000;
-      animation: blink 0.5s step-end infinite;
-      margin: 20px 0;
-    }
-
-    a { color: #0000ff; font-weight: bold; font-size: 20px; }
-  </style>
+  <meta name="description" content="合同会社ひとなみ舎（愛知県豊橋市・水上ビル）。人波を読む。人並みを守る。まちの人流の見える化、イベントの企画・運営、地域の仕事の仕組み化。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <div class="container">
 
-  <div style="font-size:14px; color:#fff; font-weight:bold;">
+  <div class="counter">
     ★アクセスカウンター★
-    <img src="https://hits.sh/hitonamisha.github.io/welcome.svg?style=flat&color=00FF00&label=%E6%9D%A5%E8%A8%AA%E8%80%85"
-         style="vertical-align:middle;">
+    <img src="https://hits.sh/hitonamisha.github.io/welcome.svg?style=flat&color=00FF00&label=%E6%9D%A5%E8%A8%AA%E8%80%85" class="counter-img" alt="来訪者数">
   </div>
 
   <!-- タイトル -->
@@ -188,7 +26,7 @@
     <div class="sub">★ようこそ！いらっしゃいませ！★</div>
     <div>
       <span class="heart">♥</span>
-      <span style="font-size:22px; color:#0000ff; font-weight:bold;">人波を読む。人並みを守る。</span>
+      <span class="tagline">人波を読む。人並みを守る。</span>
       <span class="heart">♥</span>
     </div>
   </div>
@@ -204,82 +42,82 @@
 
   <!-- わたしたちについて -->
   <div class="section">
-    <h2 style="color:#8b00ff;">🌊 ひとなみ舎ってなに？ 🌊</h2>
+    <h2 class="c-purple">🌊 ひとなみ舎ってなに？ 🌊</h2>
     <p>
       <strong>「ひとのなみ」から考える</strong>会社です。<br>
       まちの<strong>人波</strong>（ひとなみ）を読んで、<br>
       だれもが<strong>人並み</strong>（ひとなみ）に暮らせる地域をめざします。
     </p>
-    <p style="font-size:16px;">
+    <p class="text-m">
       「イベントは効いたのか」「去年より減っていないか」<br>
       がんばっている現場に、ちょっとした<strong>気づき</strong>を届けます。
     </p>
     <div class="service-grid">
       <div class="service-card">
-        📏 人のなみを<br>はかる！！<br><span style="font-size:13px;">見える化・分析・レポート</span>
+        📏 人のなみを<br>はかる！！<br><span class="card-note">見える化・分析・レポート</span>
       </div>
       <div class="service-card">
-        🎪 人のなみを<br>つくる！！<br><span style="font-size:13px;">朝市などの企画・運営</span>
+        🎪 人のなみを<br>つくる！！<br><span class="card-note">朝市などの企画・運営</span>
       </div>
     </div>
-    <p style="font-size:16px; margin-top:12px;">
+    <p class="text-m mt">
       はかる×つくるを<strong>セットで</strong>。集客の企画から効果の確認まで、まるごとお手伝いします。
     </p>
   </div>
 
   <!-- 事業紹介 -->
   <div class="section">
-    <h2 style="color:#ff0000;">🎉 わたしたちのサービス 🎉</h2>
+    <h2 class="c-red">🎉 わたしたちのサービス 🎉</h2>
     <span class="emoji-row">📡🐝📊</span>
     <div class="service-grid">
       <div class="service-card">
-        📊 まちの人なみを<br>見える化！！<br><span style="font-size:13px;">前日比・先月比・イベントの効果</span>
+        📊 まちの人なみを<br>見える化！！<br><span class="card-note">前日比・先月比・イベントの効果</span>
       </div>
       <div class="service-card">
-        🤖 ひと気予報<br>毎朝お届け<br><span style="font-size:13px;">今日のお店のイベントも</span>
+        🤖 ひと気予報<br>毎朝お届け<br><span class="card-note">今日のお店のイベントも</span>
       </div>
       <div class="service-card">
-        💬 AI事務局ボット<br>（LINE対応）<br><span style="font-size:13px;">問い合わせ対応を仕組みに</span>
+        💬 AI事務局ボット<br>（LINE対応）<br><span class="card-note">問い合わせ対応を仕組みに</span>
       </div>
       <div class="service-card">
-        📝 月イチ<br>まちのレポート<br><span style="font-size:13px;">人流×イベント×天気＋AIコメント</span>
+        📝 月イチ<br>まちのレポート<br><span class="card-note">人流×イベント×天気＋AIコメント</span>
       </div>
       <div class="service-card">
-        🎪 イベントの<br>企画・運営<br><span style="font-size:13px;">朝市などの実績あり</span>
+        🎪 イベントの<br>企画・運営<br><span class="card-note">朝市などの実績あり</span>
       </div>
       <div class="service-card">
-        🏪 お店の情報<br>まとめます<br><span style="font-size:13px;">営業時間・インスタのお知らせ</span>
+        🏪 お店の情報<br>まとめます<br><span class="card-note">営業時間・インスタのお知らせ</span>
       </div>
     </div>
   </div>
 
   <!-- 料金 -->
   <div class="section">
-    <h2 style="color:#0000ff;">💰 おねだん 💰</h2>
+    <h2 class="c-blue">💰 おねだん 💰</h2>
     <p>
       <span class="badge">NEW</span>
       <span class="badge">お得</span>
       <span class="badge">限定</span>
     </p>
-    <p style="font-size:20px; color:#ff0000; font-weight:bold;">
+    <p class="price">
       📊 まちの見える化＋月イチレポート<br>
       初期費用 5〜15万円<br>
-      <span style="font-size:16px; color:#333;">（設置場所の数・WiFiのあり/なしで変動）</span><br>
+      <span class="price-note">（設置場所の数・WiFiのあり/なしで変動）</span><br>
       月額 5万円〜
     </p>
-    <p style="font-size:20px; color:#ff0000; font-weight:bold;">
+    <p class="price">
       💬 AI事務局ボット<br>
       個別にご相談ください<br>
-      <span style="font-size:16px; color:#333;">（よくある質問の数・業務とのつなぎ込みで変わります）</span>
+      <span class="price-note">（よくある質問の数・業務とのつなぎ込みで変わります）</span>
     </p>
-    <p style="color:#0000ff; font-weight:bold; animation: blink 1s step-end infinite; display:inline-block;">
+    <p class="free">
       ※ 今なら相談無料！！
     </p>
   </div>
 
   <!-- 会社情報 -->
   <div class="section">
-    <h2 style="color:#ff00cc;">🏢 会社情報 🏢</h2>
+    <h2 class="c-pink">🏢 会社情報 🏢</h2>
     <p>
       <strong>社名：</strong>合同会社ひとなみ舎<br>
       <strong>所在地：</strong>愛知県豊橋市<br>
@@ -292,26 +130,26 @@
 
   <!-- ひとなみ予報 -->
   <div class="section" id="yoho-section">
-    <h2 style="color:#ff6600;">📡 水上ビル ひとなみ予報 📡</h2>
-    <p style="font-size:14px; color:#555; line-height:1.8; text-align:left; margin-bottom:12px;">
+    <h2 class="c-orange">📡 水上ビル ひとなみ予報 📡</h2>
+    <p class="yoho-lead">
       豊橋市の水上ビル商店街に置いた小さなセンサーで、まちを行き交う人の流れをかぞえています。<br>
       1時間ごとに集計し、エリア別のひと気を配信中！<br>
-      <span style="font-size:12px; color:#999;">※ スマートフォンのBluetooth電波を数えるしくみです。個人は特定しません。集計のみです。</span>
+      <span class="note-s">※ スマートフォンのBluetooth電波を数えるしくみです。個人は特定しません。集計のみです。</span>
     </p>
-    <div id="yoho-body" style="font-family:monospace; font-size:15px; line-height:2; text-align:center; padding:8px;">
-      <span style="color:#999;">読み込み中...</span>
+    <div id="yoho-body">
+      <span class="muted">読み込み中...</span>
     </div>
-    <div style="font-size:11px; color:#999; margin-top:8px;">
+    <div class="yoho-foot">
       ※ 前時間の確定データを表示 / 自動更新1時間おき
     </div>
   </div>
 
   <!-- お問い合わせ -->
   <div class="section">
-    <h2 style="color:#00aa00;">📧 お問い合わせ 📧</h2>
+    <h2 class="c-green">📧 お問い合わせ 📧</h2>
     <p>
       <a href="mailto:info@hitonamisha.com">info@hitonamisha.com</a><br>
-      <span style="font-size:14px; color:#999;">（メールアドレスは仮です）</span>
+      <span class="note">（メールアドレスは仮です）</span>
     </p>
   </div>
 
@@ -321,7 +159,7 @@
 
   <div class="footer">
     <p>Copyright © 2026 合同会社ひとなみ舎 All Rights Reserved.</p>
-    <p style="font-size:12px; color:#888;">
+    <p class="footer-note">
       推奨環境: Internet Explorer 6.0以上 / 画面解像度 800×600
     </p>
     <p>🌟 Since 2026 🌟</p>
@@ -329,77 +167,6 @@
 
 </div>
 
-<script>
-const DATA_URL = './data/yoho.json';
-const SHOPPING_AREA = ['A棟','B棟','C棟','D棟'];
-
-function bar(n, max) {
-  const pct = n / Math.max(max, 1);
-  if (pct >= 0.9) return '█████';
-  if (pct >= 0.7) return '████░';
-  if (pct >= 0.5) return '███░░';
-  if (pct >= 0.3) return '██░░░';
-  if (pct >  0  ) return '█░░░░';
-  return '░░░░░';
-}
-
-function renderYoho(data) {
-  const el = document.getElementById('yoho-body');
-  if (!data) { el.innerHTML = '<span style="color:red;">データ取得失敗</span>'; return; }
-
-  const shopRows  = data.rows.filter(r =>  SHOPPING_AREA.includes(r.loc_id));
-  const otherRows = data.rows.filter(r => !SHOPPING_AREA.includes(r.loc_id));
-  const shopTotal = shopRows.reduce((s, r) => s + r.visitor_count, 0);
-  const otherTotal= otherRows.reduce((s, r) => s + r.visitor_count, 0);
-  const maxCount  = Math.max(...data.rows.map(r => r.visitor_count), 1);
-  const topLoc    = shopRows.reduce((a, b) => b.visitor_count > a.visitor_count ? b : a, shopRows[0] || {loc_id:''});
-
-  let html = `<span style="color:#ff6600;font-weight:bold;">📍 水上ビル ひと気予報</span><br>`;
-  html += `<span style="color:#aaa;">${data.hour}時台（${data.date}）</span><br><br>`;
-
-  html += `<span style="color:#ffcc00;font-weight:bold;">🏪 商店街エリア（計 ${shopTotal}人）</span><br>`;
-  shopRows.forEach(r => {
-    const crown = r.loc_id === topLoc.loc_id ? ' 👑' : '';
-    const stay  = r.stay_count > 0 ? ` <span style="color:#aaa;">滞在${r.stay_count}人</span>` : '';
-    html += `<span style="color:#00ff00;">${bar(r.visitor_count, maxCount)}</span> ${r.loc_id}${crown}: <b>${r.visitor_count}人</b>${stay}<br>`;
-  });
-
-  if (otherRows.length > 0) {
-    html += `<br><span style="color:#ffcc00;font-weight:bold;">📌 その他エリア（計 ${otherTotal}人）</span><br>`;
-    otherRows.forEach(r => {
-      const stay = r.stay_count > 0 ? ` <span style="color:#aaa;">滞在${r.stay_count}人</span>` : '';
-      html += `<span style="color:#00ff00;">${bar(r.visitor_count, maxCount)}</span> ${r.loc_id}: <b>${r.visitor_count}人</b>${stay}<br>`;
-    });
-  }
-
-  if (data.flows && data.flows.length > 0) {
-    html += `<br><span style="color:#ffcc00;font-weight:bold;">🚶 移動の流れ</span><br>`;
-    data.flows.forEach(f => {
-      html += `${f.from} → ${f.to}&nbsp;&nbsp;${f.cnt}人<br>`;
-    });
-  }
-
-  html += `<br><span style="color:#666;font-size:12px;">Powered by mizunoue data center</span>`;
-  el.innerHTML = html;
-}
-
-function loadYoho() {
-  fetch(DATA_URL + '?t=' + Date.now())
-    .then(r => r.json())
-    .then(res => {
-      if (res.status === 'ok') {
-        renderYoho(res.data);
-      } else {
-        document.getElementById('yoho-body').innerHTML = '<span style="color:#aaa;">データ準備中... しばらくお待ちください</span>';
-      }
-    })
-    .catch(() => {
-      document.getElementById('yoho-body').innerHTML = '<span style="color:red;">データ取得エラー</span>';
-    });
-}
-
-loadYoho();
-setInterval(loadYoho, 3600000);
-</script>
+<script src="js/yoho.js"></script>
 </body>
 </html>

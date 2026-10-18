@@ -1,0 +1,199 @@
+/* 合同会社ひとなみ舎 welcome */
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(45deg,
+    #ff0000, #ff7700, #ffff00, #00ff00,
+    #0000ff, #8b00ff, #ff00ff, #ff0000);
+  background-size: 400% 400%;
+  animation: rainbow 3s ease infinite;
+  font-family: 'Zen Kurenaido', 'Comic Sans MS', cursive;
+  overflow-x: hidden;
+}
+
+@keyframes rainbow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-20px); }
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.title-box {
+  background: #fff;
+  border: 8px dashed #ff00ff;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 10px 10px 0 #ffff00, 20px 20px 0 #ff0000;
+}
+
+h1 {
+  font-size: 52px;
+  color: #ff00cc;
+  text-shadow:
+    3px 3px 0 #ffff00,
+    6px 6px 0 #0000ff;
+  animation: bounce 1s ease infinite;
+  margin: 0;
+}
+
+.sub {
+  font-size: 24px;
+  color: #0000ff;
+  animation: blink 0.8s step-end infinite;
+  font-weight: bold;
+}
+
+marquee {
+  background: #000;
+  color: #00ff00;
+  font-size: 20px;
+  padding: 8px 0;
+  font-weight: bold;
+  letter-spacing: 4px;
+}
+
+.heart {
+  color: #ff0000;
+  font-size: 32px;
+  animation: spin 2s linear infinite;
+  display: inline-block;
+}
+
+.section {
+  background: rgba(255,255,255,0.85);
+  border: 6px solid;
+  border-color: #ff0000 #0000ff #00ff00 #ff00ff;
+  margin: 20px 0;
+  padding: 20px;
+}
+
+.section h2 {
+  font-size: 32px;
+  margin: 0 0 12px;
+  text-shadow: 2px 2px 0 #ff9900;
+}
+
+.section p {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #333;
+}
+
+.badge {
+  display: inline-block;
+  background: #ff0000;
+  color: #ffff00;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin: 4px;
+  border: 2px solid #000;
+  animation: blink 1.5s step-end infinite;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.service-card {
+  background: linear-gradient(135deg, #ffff00, #ff00ff);
+  border: 4px solid #000;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.emoji-row {
+  font-size: 40px;
+  margin: 10px 0;
+  animation: bounce 1.5s ease infinite;
+  display: block;
+}
+
+.ufo {
+  font-size: 60px;
+  animation: spin 4s linear infinite;
+  display: inline-block;
+}
+
+.footer {
+  background: #000;
+  color: #00ff00;
+  padding: 20px;
+  font-size: 14px;
+  margin-top: 20px;
+  border: 4px solid #ff00ff;
+}
+
+.under-construction {
+  font-size: 28px;
+  color: #ff0000;
+  background: #ffff00;
+  padding: 10px;
+  border: 4px dashed #ff0000;
+  animation: blink 0.5s step-end infinite;
+  margin: 20px 0;
+}
+
+a { color: #0000ff; font-weight: bold; font-size: 20px; }
+
+/* ---- 本文の小物 ---- */
+.counter { font-size: 14px; color: #fff; font-weight: bold; }
+.counter-img { vertical-align: middle; }
+.tagline { font-size: 22px; color: #0000ff; font-weight: bold; }
+.section p.text-m { font-size: 16px; }
+.mt { margin-top: 12px; }
+.card-note { font-size: 13px; }
+.section p.price { font-size: 20px; color: #ff0000; font-weight: bold; }
+.price-note { font-size: 16px; color: #333; }
+.section p.free { color: #0000ff; font-weight: bold; animation: blink 1s step-end infinite; display: inline-block; }
+.note { font-size: 14px; color: #999; }
+.note-s { font-size: 12px; color: #999; }
+.muted { color: #999; }
+
+/* 見出しの色 */
+.c-purple { color: #8b00ff; }
+.c-red    { color: #ff0000; }
+.c-blue   { color: #0000ff; }
+.c-pink   { color: #ff00cc; }
+.c-orange { color: #ff6600; }
+.c-green  { color: #00aa00; }
+
+/* ---- ひとなみ予報 ---- */
+.section p.yoho-lead { font-size: 14px; color: #555; line-height: 1.8; text-align: left; margin-bottom: 12px; }
+#yoho-body { font-family: monospace; font-size: 15px; line-height: 2; text-align: center; padding: 8px; }
+.yoho-foot { font-size: 11px; color: #999; margin-top: 8px; }
+.y-title  { color: #ff6600; font-weight: bold; }
+.y-head   { color: #ffcc00; font-weight: bold; }
+.y-dim    { color: #aaa; }
+.y-bar    { color: #00ff00; }
+.y-error  { color: red; }
+.y-credit { color: #666; font-size: 12px; }
+
+.footer p.footer-note { font-size: 12px; color: #888; }

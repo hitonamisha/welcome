@@ -197,3 +197,14 @@ a { color: #0000ff; font-weight: bold; font-size: 20px; }
 .y-credit { color: #666; font-size: 12px; }
 
 .footer p.footer-note { font-size: 12px; color: #888; }
+
+/* 2026-11-24 追加：ダッシュボードへの入口・おねだんの中身・実績 */
+.section p.dash-wrap { margin-top: 14px; }
+.dash-link {
+  display: inline-block; padding: 10px 18px; font-size: 17px; font-weight: bold;
+  color: #0000ff; background: linear-gradient(#ffff66, #ffcc00);
+  border: 3px outset #ffcc00; text-decoration: none; border-radius: 4px;
+}
+.dash-link:hover { border-style: inset; color: #ff00cc; }
+.price-list { text-align: left; display: inline-block; margin: 0 auto 18px; padding-left: 1.4em; font-size: 15px; line-height: 1.8; max-width: 100%; }
+.section p.track { text-align: left; font-size: 15px; line-height: 1.8; background: #ffffcc; border: 2px dashed #ff9900; padding: 10px 14px; }
